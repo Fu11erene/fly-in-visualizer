@@ -94,7 +94,7 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
   - `read_output(path: str) -> list[TurnRecord]`（要素 i がターン i+1。各行は `parse_line` で分解）
   - `colored_segments(raw: str) -> list[tuple[str, RGB | None]]`
 
-- [ ] **Step 1: 失敗するテストを書く**（ファイルは `tmp_path` に bytes で書く）
+- [x] **Step 1: 失敗するテストを書く**（ファイルは `tmp_path` に bytes で書く）
 
 - `O1`: `"D1-a D2-b\nD1-e\n"` → 2 ターン、`moves == [Move(1, "a"), Move(2, "b")]`、`[Move(1, "e")]`
 - `O2`: 色付き `"D1-\033[38;2;255;230;0mjunction\033[0m"` → `Move(1, "junction")`、`raw` は色コードを含んだまま
@@ -107,15 +107,15 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
 - `O9`: `colored_segments("D1-\033[38;2;80;140;255mpath_a\033[0m D2-x")` → `[("D1-", None), ("path_a", (80, 140, 255)), (" D2-x", None)]`
 - `O10`: 空ファイル → `[]`
 
-- [ ] **Step 2: `uv run pytest tests/test_replay.py -v` が FAIL することを確認**
+- [x] **Step 2: `uv run pytest tests/test_replay.py -v` が FAIL することを確認**
 
-- [ ] **Step 3: `replay.py` を実装する**
+- [x] **Step 3: `replay.py` を実装する**
 
 移動は正規表現 `^D(\d+)-(.+)$`。ANSI は `\033\[[0-9;]*m`。`colored_segments` は `38;2;r;g;b` で色開始、`0` で解除、ほかの SGR は無視。
 
-- [ ] **Step 4: `uv run pytest tests/test_replay.py -v` が PASS、`make lint` が通ることを確認**
+- [x] **Step 4: `uv run pytest tests/test_replay.py -v` が PASS、`make lint` が通ることを確認**
 
-- [ ] **Step 5: コミット**（`"出力ファイルの読み込みを追加"`）
+- [x] **Step 5: コミット**（`"出力ファイルの読み込みを追加"`）
 
 ---
 
