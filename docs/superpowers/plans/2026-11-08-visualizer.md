@@ -334,15 +334,15 @@ Expected: PNG を Read ツールで開き、ブレインストーミングのモ
 
 `app.run`: ウィンドウ 1280×800、リサイズ可（`pygame.RESIZABLE`）。マップ領域は上から `高さ - PANEL_HEIGHT`。60 FPS で `player.update(dt)`。キーは上記の説明どおり（1〜4 が `SPEEDS` の順）。描画には `states[player.from_turn]`、`states[player.shown_turn]`、`player.alpha`、パネルには `records[player.shown_turn - 1]`（ターン 0 は `None`）と `states[player.shown_turn]` を渡す。
 
-- [ ] **Step 1: 失敗するテストを書く**（`tests/test_main.py`。`monkeypatch` で `sys.argv` を差し替え、`app.run` も何もしない関数に差し替える）
+- [x] **Step 1: 失敗するテストを書く**（`tests/test_main.py`。`monkeypatch` で `sys.argv` を差し替え、`app.run` も何もしない関数に差し替える）
 
 - `A1`: フィクスチャの `easy/02_simple_fork` で `main() == 0`、`app.run` が 1 回呼ばれ、`states` の長さが 5
 - `A2`: 存在しないマップ → `main() == 1`、標準エラーが `Error: ` で始まる
 - `A3`: 書式エラーの出力ファイル → `main() == 1`
 
-- [ ] **Step 2: FAIL を確認** → **Step 3: `panel.py`・`app.py`・`main.py` を実装** → **Step 4: `uv run pytest -v` が全部 PASS、`make lint`**
+- [x] **Step 2: FAIL を確認** → **Step 3: `panel.py`・`app.py`・`main.py` を実装** → **Step 4: `uv run pytest -v` が全部 PASS、`make lint`**
 
-- [ ] **Step 5: 手で確認する**（`make run`、続いて `make run MAP=tests/fixtures/maps/hard/03_ultimate_challenge.txt OUT=tests/fixtures/outputs/hard/03_ultimate_challenge.txt`）
+- [x] **Step 5: 手で確認する**（`make run`、続いて `make run MAP=tests/fixtures/maps/hard/03_ultimate_challenge.txt OUT=tests/fixtures/outputs/hard/03_ultimate_challenge.txt`）
 
 確認項目:
 - 再生でドローンがなめらかに動き、最終ターンで止まる。もう一度押すと最初から。
@@ -352,4 +352,4 @@ Expected: PNG を Read ツールで開き、ブレインストーミングのモ
 - ウィンドウをリサイズしても崩れない。
 - `tests/fixtures/outputs/easy/02_simple_fork.txt` をコピーして 2 行目の `D3-junction` を消したファイルを開くと、該当ターンで赤表示・理由・シークバーの目印が出る。
 
-- [ ] **Step 6: コミット**（`"操作パネルとメインループを追加"`）
+- [x] **Step 6: コミット**（`"操作パネルとメインループを追加"`）
