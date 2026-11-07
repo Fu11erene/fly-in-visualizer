@@ -49,13 +49,13 @@
   - `class MapFileError(Exception)`: `__init__(self, line_no: int, message: str)`、メッセージ `line <n>: <message>`
   - `parse_map(path: str) -> FlyMap`
 
-- [ ] **Step 1: 土台のファイルを作る**
+- [x] **Step 1: 土台のファイルを作る**
 
 Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commit-config.yaml`・`Makefile` を写し、name を `fly-in-visualizer`、dependencies を `["pygame-ce>=2.5.8"]` にする。Makefile の `run` は `@uv run python main.py $(MAP) $(OUT)`、既定値 `MAP ?= tests/fixtures/maps/easy/02_simple_fork.txt`、`OUT ?= tests/fixtures/outputs/easy/02_simple_fork.txt`。`.gitignore` は `.venv/`、`__pycache__/`、各種 cache、`.superpowers/`。README は起動方法と操作キーだけ。
 
-- [ ] **Step 2: `uv sync` を実行し、`uv run python -c "import pygame; print(pygame.version.ver)"` が 2.5 系を表示することを確認**
+- [x] **Step 2: `uv sync` を実行し、`uv run python -c "import pygame; print(pygame.version.ver)"` が 2.5 系を表示することを確認**
 
-- [ ] **Step 3: 失敗するテストを書く**（`tests/test_fly_map.py`、マップは `tmp_path` に書いて読む）
+- [x] **Step 3: 失敗するテストを書く**（`tests/test_fly_map.py`、マップは `tmp_path` に書いて読む）
 
 - `M1`: Fly-in の `maps/easy/02_simple_fork.txt` と同じ内容 → `nb_drones == 4`、`start == "start"`、`end == "goal"`、`zones["junction"].max_drones == 2`、`zones["junction"].color == "yellow"`、`connections[0] == Connection("start", "junction", 2)`、`connections[1].max_link_capacity == 1`
 - `M2`: start / end の `max_drones` は `nb_drones`（`[max_drones=1]` と書かれていても）
@@ -65,15 +65,15 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
 - `M6`（parametrize）: 読めない行 → `MapFileError`、`match=r"^line 3:"`。ケース: `hub: a 0`（引数不足）、`foo: x`（未知のキー）、`hub: a x 0`（整数でない）
 - `M7`: start_hub がない → `MapFileError`
 
-- [ ] **Step 4: `uv run pytest tests/test_fly_map.py -v` が FAIL（import できない）することを確認**
+- [x] **Step 4: `uv run pytest tests/test_fly_map.py -v` が FAIL（import できない）することを確認**
 
-- [ ] **Step 5: `fly_map.py` を実装する**
+- [x] **Step 5: `fly_map.py` を実装する**
 
 行は `key: args [k=v ...]` を `str.partition(":")` と `[` の位置で分ける程度でよい（Fly-in ほど厳密でなくてよい）。
 
-- [ ] **Step 6: `uv run pytest tests/test_fly_map.py -v` が PASS、`make lint` が通ることを確認**
+- [x] **Step 6: `uv run pytest tests/test_fly_map.py -v` が PASS、`make lint` が通ることを確認**
 
-- [ ] **Step 7: コミット**（`git add -A && git commit -m "プロジェクトの土台とマップの読み込みを追加"`）
+- [x] **Step 7: コミット**（`git add -A && git commit -m "プロジェクトの土台とマップの読み込みを追加"`）
 
 ---
 

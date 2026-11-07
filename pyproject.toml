@@ -1,0 +1,27 @@
+[project]
+name = "fly-in-visualizer"
+version = "0.1.0"
+description = "Replays and checks Fly-in simulation output."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["pygame-ce>=2.5.8"]
+
+[dependency-groups]
+dev = [
+    "flake8>=7.3",
+    "mypy>=1.18",
+    "pre-commit>=4.7.0",
+    "pytest>=8.4",
+    "ruff>=0.14",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.mypy]
+python_version = "3.14"
+exclude = [".venv/*"]
+
+[tool.ruff]
+line-length = 79
