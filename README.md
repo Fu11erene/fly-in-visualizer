@@ -5,12 +5,19 @@ rule violation in red.
 
 ## Usage
 
+Clone it inside the Fly-in repository (Fly-in's `.gitignore`, flake8,
+mypy and ruff settings already skip `fly-in-visualizer/`):
+
 ```
-cd ../Fly-in && uv run python main.py maps/easy/02_simple_fork.txt > out.txt
-cd ../fly-in-visualizer
-uv run python main.py ../Fly-in/maps/easy/02_simple_fork.txt ../Fly-in/out.txt
-# or: make run MAP=<map file> OUT=<output file>
+cd Fly-in
+git clone <this repository> fly-in-visualizer
+uv run python main.py maps/easy/02_simple_fork.txt > out.txt
+cd fly-in-visualizer
+make install
+make run MAP=../maps/easy/02_simple_fork.txt OUT=../out.txt
 ```
+
+Without `MAP`/`OUT`, `make run` replays a sample from `tests/fixtures`.
 
 ## Controls
 
