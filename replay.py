@@ -112,8 +112,8 @@ def read_output(path: str) -> list[TurnRecord]:
 def colored_segments(raw: str) -> list[tuple[str, RGB | None]]:
     """Split a line into runs of text and the color each is shown in.
 
-    Only 24-bit foreground colors (``38;2;r;g;b``) are understood; any
-    other code turns the color off.
+    Only 24-bit foreground colors (``38;2;r;g;b``) with values from 0 to
+    255 are understood; any other code turns the color off.
 
     Args:
         raw: An output line with its color codes.
@@ -128,13 +128,25 @@ def colored_segments(raw: str) -> list[tuple[str, RGB | None]]:
     for match in _ANSI_RE.finditer(raw):
         if match.start() > pos:
             segments.append((raw[pos:match.start()], color))
-        params = match[1].split(";")
-        if len(params) == 5 and params[:2] == ["38", "2"]:
-            r, g, b = (int(p) for p in params[2:])
-            color = (r, g, b)
-        else:
-            color = None
+        color = _rgb(match[1])
         pos = match.end()
     if pos < len(raw):
         segments.append((raw[pos:], color))
     return segments
+
+
+def _rgb(params: str) -> RGB | None:
+    """The color set by an SGR code's parameters, or None.
+
+    Args:
+        params: The text between ``\\033[`` and ``m``.
+
+    Returns:
+        The color for a valid ``38;2;r;g;b``; None for anything else.
+    """
+    parts = params.split(";")
+    if len(parts) != 5 or parts[:2] != ["38", "2"]:
+        return None
+    if not all(part.isdigit() and int(part) <= 255 for part in parts[2:]):
+        return None
+    return (int(parts[2]), int(parts[3]), int(parts[4]))

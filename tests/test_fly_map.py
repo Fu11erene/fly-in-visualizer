@@ -111,3 +111,23 @@ def test_missing_start(tmp_path: Path) -> None:
     """M7: a map without start_hub is rejected."""
     with pytest.raises(MapFileError, match="start_hub"):
         parse(tmp_path, "nb_drones: 1\nend_hub: e 1 0\n")
+
+
+@pytest.mark.parametrize(
+    ("line", "keyword"),
+    [
+        pytest.param("connection: s-ghost", "unknown zone 'ghost'", id="M8a"),
+        pytest.param("hub: s 5 5", "duplicate zone 's'", id="M8b"),
+        pytest.param("connection: e-s", "duplicate connection", id="M8c"),
+        pytest.param("hub: a-b 1 1", "must not contain '-'", id="M8d"),
+        pytest.param("connection: s-s", "cannot connect to itself", id="M8e"),
+    ],
+)
+def test_inconsistent_map(tmp_path: Path, line: str, keyword: str) -> None:
+    """M8: lines that clash with the rest of the map are rejected."""
+    content = (
+        f"nb_drones: 1\nstart_hub: s 0 0\nend_hub: e 1 0\n"
+        f"connection: s-e\n{line}\n"
+    )
+    with pytest.raises(MapFileError, match=rf"^line 5: .*{keyword}"):
+        parse(tmp_path, content)

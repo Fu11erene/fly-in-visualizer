@@ -146,8 +146,10 @@ def parse_map(path: str) -> FlyMap:
 
     Raises:
         OSError: If the file cannot be read.
-        MapFileError: If a line cannot be read, or nb_drones, start_hub
-            or end_hub is missing.
+        MapFileError: If a line cannot be read, a zone or connection is
+            defined twice, a connection names an undefined zone or
+            joins a zone to itself, or nb_drones, start_hub or end_hub
+            is missing.
     """
     nb_drones: int | None = None
     start: ZoneName | None = None
@@ -170,13 +172,17 @@ def parse_map(path: str) -> FlyMap:
             nb_drones = _int(line_no, args[0])
         elif key in ZONE_KEYS:
             zone = _zone(line_no, key, args, metadata)
+            if zone.name in zones:
+                raise MapFileError(line_no, f"duplicate zone '{zone.name}'")
             zones[zone.name] = zone
             if key == "start_hub":
                 start = zone.name
             elif key == "end_hub":
                 end = zone.name
         elif key == "connection":
-            connections.append(_connection(line_no, args, metadata))
+            connection = _connection(line_no, args, metadata)
+            _check_connection(line_no, connection, zones, connections)
+            connections.append(connection)
         else:
             raise MapFileError(line_no, f"unknown key '{key}'")
 
@@ -239,6 +245,8 @@ def _zone(
     if len(args) != 3:
         raise MapFileError(line_no, f"{key} expects: <name> <x> <y>")
     name, x, y = args
+    if "-" in name:
+        raise MapFileError(line_no, f"zone name '{name}' must not contain '-'")
     try:
         zone_type = ZoneType(metadata.get("zone", "normal"))
     except ValueError:
@@ -267,3 +275,23 @@ def _connection(
     a, b = args[0].split("-")
     capacity = _int(line_no, metadata.get("max_link_capacity", "1"))
     return Connection(a, b, capacity)
+
+
+def _check_connection(
+    line_no: int,
+    connection: Connection,
+    zones: dict[ZoneName, Zone],
+    connections: list[Connection],
+) -> None:
+    """Reject a connection that does not fit the zones read so far."""
+    for name in (connection.a, connection.b):
+        if name not in zones:
+            raise MapFileError(line_no, f"unknown zone '{name}'")
+    if connection.a == connection.b:
+        raise MapFileError(
+            line_no, f"zone '{connection.a}' cannot connect to itself"
+        )
+    if any(other.link == connection.link for other in connections):
+        raise MapFileError(
+            line_no, f"duplicate connection {connection.name}"
+        )

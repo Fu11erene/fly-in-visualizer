@@ -103,3 +103,18 @@ def test_colored_segments() -> None:
 def test_empty_file(tmp_path: Path) -> None:
     """O10: an empty file has no turns."""
     assert read(tmp_path, b"") == []
+
+
+@pytest.mark.parametrize(
+    "code",
+    [
+        pytest.param("\033[38;2;300;0;0m", id="O11a"),
+        pytest.param("\033[38;2;;;m", id="O11b"),
+    ],
+)
+def test_invalid_color_is_plain(code: str) -> None:
+    """O11: a color that cannot be drawn is shown as plain text."""
+    assert colored_segments(f"D1-{code}a\033[0m") == [
+        ("D1-", None),
+        ("a", None),
+    ]
