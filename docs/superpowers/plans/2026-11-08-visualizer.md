@@ -262,7 +262,7 @@ done
   - `lerp(a: Point, b: Point, t: float) -> Point`
   - `slot_offsets(count: int, radius: float) -> list[Point]`（同じ場所にいるドローンをずらす量）
 
-- [ ] **Step 1: 失敗するテストを書く**
+- [x] **Step 1: 失敗するテストを書く**
 
 - `L1`: 全ゾーンが `margin` の内側に収まり、縦横比を保つ（x 幅 3・y 幅 2 のマップを 800×400 に置くと、y が詰まる側になり x 方向は中央寄せ）
 - `L2`: ゾーンが 1 つ、または全ゾーンが同じ座標 → 領域の中央（0 除算しない）
@@ -272,9 +272,9 @@ done
 - `L6`: `zone_rgb("RED") == zone_rgb("red") == (255, 60, 60)`、`zone_rgb(None) == zone_rgb("rainbow") == UNKNOWN_ZONE`
 - `L7`: 幅・高さが `2 * margin` 以下の領域でも `zone_point` が例外を出さない（領域の中央に寄せる）
 
-- [ ] **Step 2: FAIL を確認** → **Step 3: 実装** → **Step 4: `uv run pytest tests/test_layout.py -v` PASS、`make lint`**
+- [x] **Step 2: FAIL を確認** → **Step 3: 実装** → **Step 4: `uv run pytest tests/test_layout.py -v` PASS、`make lint`**
 
-- [ ] **Step 5: コミット**（`"色と座標の計算を追加"`）
+- [x] **Step 5: コミット**（`"色と座標の計算を追加"`）
 
 ---
 
