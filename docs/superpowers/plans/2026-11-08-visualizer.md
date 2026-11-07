@@ -135,7 +135,7 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
   - `@dataclass TurnState(turn: int, positions: dict[int, Position], zone_counts: dict[ZoneName, int], link_counts: dict[Link, int], violations: list[Violation])`、プロパティ `used_links -> set[Link]`（`link_counts` の値が 1 以上のもの）
   - `simulate(fly_map: FlyMap, records: list[TurnRecord]) -> list[TurnState]`（長さ `len(records) + 1`、要素 0 はターン 0）
 
-- [ ] **Step 1: 失敗するテストを書く**（`TurnRecord` は `read_output` を通さず直接作るヘルパー `turns(*lines: str) -> list[TurnRecord]` を置き、各行は `replay.parse_line` で分解する）
+- [x] **Step 1: 失敗するテストを書く**（`TurnRecord` は `read_output` を通さず直接作るヘルパー `turns(*lines: str) -> list[TurnRecord]` を置き、各行は `replay.parse_line` で分解する）
 
 - `S1`: ターン 0 は全ドローンが start、`zone_counts["s"] == 2`
 - `S2`: 行に現れないドローンは前のターンの位置のまま
@@ -145,15 +145,15 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
 - `S6`: 同じターンに D1 が着陸し D2 が同じリンクへ進入 → そのターンの `link_counts[sr] == 1`（Review Focus 3）
 - `S7`: end に着いたドローンは以降の行に現れなくても end に数え続ける
 
-- [ ] **Step 2: `uv run pytest tests/test_simulation.py -v` が FAIL することを確認**
+- [x] **Step 2: `uv run pytest tests/test_simulation.py -v` が FAIL することを確認**
 
-- [ ] **Step 3: `simulate` を実装する（このタスクでは `violations` は常に空でよい）**
+- [x] **Step 3: `simulate` を実装する（このタスクでは `violations` は常に空でよい）**
 
 接続名の移動の行き先 `dst` は、接続の両端のうち現在のゾーンでないほう。どちらの端も現在のゾーンでなければ、restricted の端、それもなければ `b`。
 
-- [ ] **Step 4: `uv run pytest tests/test_simulation.py -v` が PASS、`make lint` が通ることを確認**
+- [x] **Step 4: `uv run pytest tests/test_simulation.py -v` が PASS、`make lint` が通ることを確認**
 
-- [ ] **Step 5: コミット**（`"状態の復元と使用数を追加"`）
+- [x] **Step 5: コミット**（`"状態の復元と使用数を追加"`）
 
 ---
 
