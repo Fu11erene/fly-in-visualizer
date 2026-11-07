@@ -288,23 +288,23 @@ done
 - Produces:
   - フォントは pygame の既定フォント（`pygame.font.Font(None, size)`）を使う
   - `view.py`: `draw_map(surface: pygame.Surface, layout: MapLayout, fly_map: FlyMap, before: TurnState, after: TurnState, alpha: float, font: pygame.font.Font) -> None`
-  - `scripts/snapshot.py`: `uv run python scripts/snapshot.py <map> <output> <turn> <png>` で、指定ターンの静止画を PNG に保存する（`SDL_VIDEODRIVER=dummy` で動く。手での確認用）
+  - `scripts/snapshot.py`: `uv run python -m scripts.snapshot <map> <output> <turn> <png>` で、指定ターンの静止画を PNG に保存する（`SDL_VIDEODRIVER=dummy` で動く。手での確認用）
 
 描画内容（スペックの「画面」の通り）:
 - リンク: 灰色の線。`after.used_links` に含まれるものは `HIGHLIGHT` の太線。違反の `link` に含まれるものは `ERROR`。中点に `使用数/上限`（`after.link_counts`）。
 - ゾーン: `zone_rgb` の円。違反の `zone` に含まれるものは `ERROR` の太い縁取り。近くに名前と `使用数/上限`（`after.zone_counts`）。上限超過は数字も `ERROR`。
 - ドローン: `lerp(layout.position_point(before 位置), layout.position_point(after 位置), alpha)` に、同じ地点のドローン数に応じた `slot_offsets` を足した場所へ、番号入りの白い丸。違反の `drone` に含まれるものは赤い縁取り。`alpha == 0` のときは `before == after` として扱う。
 
-- [ ] **Step 1: `view.py`・`scripts/snapshot.py` を実装する**
+- [x] **Step 1: `view.py`・`scripts/snapshot.py` を実装する**
 
-- [ ] **Step 2: スナップショットで確認する**
+- [x] **Step 2: スナップショットで確認する**
 
-Run: `SDL_VIDEODRIVER=dummy uv run python scripts/snapshot.py tests/fixtures/maps/easy/02_simple_fork.txt tests/fixtures/outputs/easy/02_simple_fork.txt 2 /tmp/viz-turn2.png`
+Run: `SDL_VIDEODRIVER=dummy uv run python -m scripts.snapshot tests/fixtures/maps/easy/02_simple_fork.txt tests/fixtures/outputs/easy/02_simple_fork.txt 2 /tmp/viz-turn2.png`
 Expected: PNG を Read ツールで開き、ブレインストーミングのモックアップ v3（junction 2/2、start-junction 2/2 がオレンジ、D1 が path_a、D2 が path_b、D3・D4 が junction）と同じ内容が描かれている。`tests/fixtures/maps/challenger/01_the_impossible_dream.txt` の最終ターンも出力し、ゾーンが画面からはみ出していないことを見る。
 
-- [ ] **Step 3: `make lint` が通ることを確認**
+- [x] **Step 3: `make lint` が通ることを確認**
 
-- [ ] **Step 4: コミット**（`"マップの描画を追加"`）
+- [x] **Step 4: コミット**（`"マップの描画を追加"`）
 
 ---
 

@@ -79,6 +79,11 @@ class MapLayout:
         self._left = left + margin + (inner_w - span_x * self._scale) / 2
         self._top = top + margin + (inner_h - span_y * self._scale) / 2
 
+    @property
+    def scale(self) -> float:
+        """Screen pixels per map unit; 0 when every zone is on one spot."""
+        return self._scale
+
     def zone_point(self, name: ZoneName) -> Point:
         """Where a zone is drawn."""
         zone = self._fly_map.zones[name]
