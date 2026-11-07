@@ -17,15 +17,9 @@ make play MAP=../maps/easy/02_simple_fork.txt
 ```
 
 `make play` runs Fly-in on `MAP`, saves its output to `.play-output.txt`
-and replays it. To replay an output you saved yourself:
-
-```
-make run MAP=../maps/easy/02_simple_fork.txt OUT=../out.txt
-```
-
-Without `MAP`/`OUT`, `make run` replays a sample from `tests/fixtures`.
+and replays it. Without `MAP`, it plays `../maps/easy/01_linear_path.txt`.
 If Fly-in is somewhere else than the parent directory, pass
-`FLYIN=<path to Fly-in>` to `make play`.
+`FLYIN=<path to Fly-in>`.
 
 ## Controls
 

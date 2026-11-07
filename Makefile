@@ -1,26 +1,24 @@
-MAP ?= tests/fixtures/maps/easy/02_simple_fork.txt
-OUT ?= tests/fixtures/outputs/easy/02_simple_fork.txt
-# Fly-in repository this visualizer is cloned into, and where `play`
-# saves Fly-in's output.
+# Fly-in repository this visualizer is cloned into, the map to run it on,
+# and where Fly-in's output is saved before it is replayed.
 FLYIN ?= ..
+MAP ?= $(FLYIN)/maps/easy/01_linear_path.txt
 PLAY_OUT ?= .play-output.txt
 
-.PHONY: install run play debug clean lint lint-strict test format
+.PHONY: install play debug output clean lint lint-strict test format
 
 install:
 	@uv sync
 
-run:
-	@uv run python main.py $(MAP) $(OUT)
-
 # Run Fly-in on MAP, then replay its output: make play MAP=../maps/...
-play:
-	@cd $(FLYIN) && uv run python main.py $(abspath $(MAP)) \
-	    > $(abspath $(PLAY_OUT))
+play: output
 	@uv run python main.py $(MAP) $(PLAY_OUT)
 
-debug:
-	@uv run python -m pdb main.py $(MAP) $(OUT)
+debug: output
+	@uv run python -m pdb main.py $(MAP) $(PLAY_OUT)
+
+output:
+	@cd $(FLYIN) && uv run python main.py $(abspath $(MAP)) \
+	    > $(abspath $(PLAY_OUT))
 
 clean:
 	@find . \( -name .venv -o -name .git \) -prune -o \
