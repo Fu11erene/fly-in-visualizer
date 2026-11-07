@@ -1,5 +1,7 @@
 # fly-in-visualizer
 
+English | [日本語](README.ja.md)
+
 Replays the output of Fly-in turn by turn, like a video player, and
 highlights every rule violation in red. Use it to show that an output is
 correct: if nothing is red, every rule held on every turn.
