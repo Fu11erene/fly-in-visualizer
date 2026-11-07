@@ -228,7 +228,7 @@ done
   - プロパティ `from_turn -> int`（`floor(time)`）、`shown_turn -> int`（`ceil(time)`）、`alpha -> float`（`time - from_turn`）
   - `toggle() -> None`、`step(delta: int) -> None`、`seek(turn: int) -> None`、`set_speed(speed: float) -> None`、`update(dt: float) -> None`（秒）
 
-- [ ] **Step 1: 失敗するテストを書く**
+- [x] **Step 1: 失敗するテストを書く**
 
 - `P1`: `update(0.5)` を再生中に呼ぶと `time == 0.5`、`from_turn == 0`、`shown_turn == 1`、`alpha == 0.5`
 - `P2`: 停止中は `update` で `time` が変わらない
@@ -240,9 +240,9 @@ done
 - `P8`: `seek` / `step` は `playing` を変えない
 - `P9`: `last_turn=0` で `toggle`・`update(1)`・`step(1)`・`seek(5)` がどれも例外なし、`time == 0.0`（Review Focus 4）
 
-- [ ] **Step 2: FAIL を確認** → **Step 3: `player.py` を実装** → **Step 4: `uv run pytest tests/test_player.py -v` PASS、`make lint`**
+- [x] **Step 2: FAIL を確認** → **Step 3: `player.py` を実装** → **Step 4: `uv run pytest tests/test_player.py -v` PASS、`make lint`**
 
-- [ ] **Step 5: コミット**（`"再生の時間管理を追加"`）
+- [x] **Step 5: コミット**（`"再生の時間管理を追加"`）
 
 ---
 
