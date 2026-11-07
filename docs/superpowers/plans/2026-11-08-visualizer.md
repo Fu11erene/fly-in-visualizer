@@ -187,7 +187,7 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
 
 UNKNOWN_NAME / UNKNOWN_DRONE / DUPLICATE_DRONE の 2 回目は位置を変えない。NOT_LANDED で行に現れなければ `InFlight` のまま。
 
-- [ ] **Step 1: フィクスチャを作る**
+- [x] **Step 1: フィクスチャを作る**
 
 ```bash
 cp -R /Users/fu/dev/Fly-in/maps tests/fixtures/maps
@@ -200,18 +200,18 @@ done
 
 `tests/fixtures/outputs/` に 10 ファイルでき、どれも空でないことを確認。
 
-- [ ] **Step 2: 失敗するテストを書く**（`V1`〜`V12` は表の各行に 1 つずつ、Task 3 の `make_map` / `turns` を使う。それぞれ違反のあるターンで `[v.kind for v in states[t].violations] == [期待する kind]` と、表のフィールドが正しいことを確かめる。加えて）
+- [x] **Step 2: 失敗するテストを書く**（`V1`〜`V12` は表の各行に 1 つずつ、Task 3 の `make_map` / `turns` を使う。それぞれ違反のあるターンで `[v.kind for v in states[t].violations] == [期待する kind]` と、表のフィールドが正しいことを確かめる。加えて）
 
 - `V13`: 正しい出力（Task 3 の S1〜S7 の入力すべて）では全ターン違反なし
 - `V20`（parametrize、id はマップの相対パス）: `tests/fixtures/` の全マップ × 出力で、全ターン `violations == []`（Review Focus 1）
 
-- [ ] **Step 3: `uv run pytest tests/test_violations.py -v` が FAIL することを確認**
+- [x] **Step 3: `uv run pytest tests/test_violations.py -v` が FAIL することを確認**
 
-- [ ] **Step 4: `simulate` に検出を追加する**
+- [x] **Step 4: `simulate` に検出を追加する**
 
-- [ ] **Step 5: `uv run pytest -v` が全部 PASS、`make lint` が通ることを確認。V20 が落ちたら、Fly-in の出力ではなく検出の数え方を疑い、`/Users/fu/dev/Fly-in/reservation.py` と突き合わせる**
+- [x] **Step 5: `uv run pytest -v` が全部 PASS、`make lint` が通ることを確認。V20 が落ちたら、Fly-in の出力ではなく検出の数え方を疑い、`/Users/fu/dev/Fly-in/reservation.py` と突き合わせる**
 
-- [ ] **Step 6: コミット**（`"規則違反の検出とフィクスチャを追加"`）
+- [x] **Step 6: コミット**（`"規則違反の検出とフィクスチャを追加"`）
 
 ---
 

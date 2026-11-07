@@ -1,0 +1,10 @@
+D1-[38;2;255;165;0mloop_a[0m D2-[38;2;255;165;0mloop_a[0m
+D1-[38;2;255;165;0mloop_b[0m D2-[38;2;255;165;0mloop_b[0m D3-[38;2;255;165;0mloop_a[0m D4-[38;2;255;165;0mloop_a[0m
+D1-[38;2;80;140;255mloop_b-exit_point[0m D3-[38;2;255;165;0mloop_b[0m D5-[38;2;255;165;0mloop_a[0m
+D1-[38;2;80;140;255mexit_point[0m D2-[38;2;80;140;255mloop_b-exit_point[0m D4-[38;2;255;165;0mloop_b[0m D6-[38;2;255;165;0mloop_a[0m
+D1-[38;2;255;60;60mgoal[0m D2-[38;2;80;140;255mexit_point[0m D3-[38;2;80;140;255mloop_b-exit_point[0m D5-[38;2;255;165;0mloop_b[0m
+D2-[38;2;255;60;60mgoal[0m D3-[38;2;80;140;255mexit_point[0m D4-[38;2;80;140;255mloop_b-exit_point[0m D6-[38;2;255;165;0mloop_b[0m
+D3-[38;2;255;60;60mgoal[0m D4-[38;2;80;140;255mexit_point[0m D5-[38;2;80;140;255mloop_b-exit_point[0m
+D4-[38;2;255;60;60mgoal[0m D5-[38;2;80;140;255mexit_point[0m D6-[38;2;80;140;255mloop_b-exit_point[0m
+D5-[38;2;255;60;60mgoal[0m D6-[38;2;80;140;255mexit_point[0m
+D6-[38;2;255;60;60mgoal[0m

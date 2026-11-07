@@ -1,0 +1,8 @@
+D1-[38;2;255;230;0mjunction[0m D2-[38;2;255;230;0mjunction[0m
+D1-[38;2;80;140;255mcorrect_path[0m D3-[38;2;255;230;0mjunction[0m
+D1-[38;2;80;140;255mintermediate[0m D2-[38;2;80;140;255mcorrect_path[0m D4-[38;2;255;230;0mjunction[0m
+D1-[38;2;0;200;80mgoal[0m D2-[38;2;80;140;255mintermediate[0m D3-[38;2;80;140;255mcorrect_path[0m D5-[38;2;255;230;0mjunction[0m
+D2-[38;2;0;200;80mgoal[0m D3-[38;2;80;140;255mintermediate[0m D4-[38;2;80;140;255mcorrect_path[0m
+D3-[38;2;0;200;80mgoal[0m D4-[38;2;80;140;255mintermediate[0m D5-[38;2;80;140;255mcorrect_path[0m
+D4-[38;2;0;200;80mgoal[0m D5-[38;2;80;140;255mintermediate[0m
+D5-[38;2;0;200;80mgoal[0m
