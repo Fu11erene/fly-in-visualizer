@@ -120,8 +120,8 @@ start と end の上限は `nb_drones`（`max_drones` の指定は無視）。
 - 違反したゾーン・リンクは、そのターンのあいだ円・線・数字を赤で描く。
 - シークバーの、違反のあるターンの位置に赤い目印を付ける。
 - 現在のターンに違反があれば、出力 1 行の下に理由を短く並べる
-  （例: `junction: 3/2 (max_drones 超過)`、`D3: path_a-goal は接続がない`）。
-- 違反が 1 件もなければ、画面のどこかに「違反なし」と分かる表示を出す。
+  （例: `junction: 3/2 (over max_drones)`、`D3: no connection path_a-goal`）。
+- 違反が 1 件もなければ、画面に `No violations` と表示する。
 
 ## 画面
 
@@ -144,8 +144,8 @@ start と end の上限は `nb_drones`（`max_drones` の指定は無視）。
   3. 現在のターンの出力 1 行。元の色コードどおりの色で表示する（読み込んだ行を
      保持しておく）。ターン 0 では空。
   4. 違反の理由（あれば）。
-  5. キー操作の説明: SPACE 再生/停止、←/→ 1 ターン戻る/進む、Home/End 最初/最後、
-     1〜4 速度、Q または Esc 終了。
+  5. キー操作の説明: `SPACE play/pause | LEFT/RIGHT step | HOME/END first/last |
+     1-4 speed | click bar to seek | Q/ESC quit`。
 
 ### 再生とアニメーション
 
@@ -164,6 +164,7 @@ start と end の上限は `nb_drones`（`max_drones` の指定は無視）。
   （`--disallow-untyped-defs` など Fly-in の Makefile と同じオプション）、ruff、
   pre-commit、Makefile（install / run / lint / test / format / clean）。
 - docstring は Fly-in と同じ Google スタイル・英語。
+- 画面の文言・違反メッセージ・エラーメッセージはすべて英語（ASCII のみ）。
 - 読み込み・状態の復元・検証は pygame に依存しない純粋なモジュールにし、pytest で
   テストする。描画と入力は手で確認する。
 - テストの `pytest.param` の id はケース番号だけ（例: `V3`、枝番は `V3a`）。

@@ -14,7 +14,7 @@
 
 - Python `>=3.14`、`.python-version` は `3.14`。
 - 行長 79 桁（flake8 / ruff）。mypy は `--warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs`。
-- docstring は Google スタイル・英語。画面の文言と違反メッセージは日本語。
+- docstring は Google スタイル・英語。画面の文言と違反メッセージはすべて英語（ASCII のみ。既定フォントで描けるよう `·` `✓` などの記号も使わない）。
 - `pytest.param` の id はケース番号だけ（例 `V3`、枝番は `V3a`）。
 - Fly-in 本体を import しない。数え方は Fly-in の `ReservationTable` と一致させる。
 - 1x = 1 ターン 1 秒。速度は 0.5 / 1 / 2 / 4。
@@ -26,7 +26,7 @@
 2. 出力ファイルが CRLF・末尾改行なし・末尾に空行あり → Task 2 の O6〜O8。
 3. 同じターンに、着陸するドローンと同じリンクへ進入するドローンがいる（着陸はリンクを数えない）→ Task 3 の S6。
 4. ターン 0 しかない出力（空ファイル）でシーク・再生しても落ちない → Task 5 の P9。
-5. 日本語フォントがない環境（評価機が Linux など）で文字化けする → Task 7 で候補フォントを順に探し、見つからなければ起動時に標準エラーへ警告を出す。手で確認する。
+5. ウィンドウをとても小さくリサイズする（マップ領域の幅・高さが `2 * margin` 以下になる）と落ちる → Task 6 の L7。
 
 ---
 
@@ -172,18 +172,18 @@ Fly-in（`/Users/fu/dev/Fly-in`）の `pyproject.toml`・`.flake8`・`.pre-commi
 
 | kind | 条件 | zone / link / drone | message 例 |
 |---|---|---|---|
-| ZONE_FULL | ゾーンの使用数 > 上限 | zone | `junction: 3/2 (max_drones 超過)` |
-| LINK_FULL | リンクの使用数 > 上限 | link | `s-a: 2/1 (max_link_capacity 超過)` |
-| NO_CONNECTION | 接続のないゾーンへ移動、または接続の上だが現在のゾーンにつながっていない | drone | `D3: path_a-goal は接続がない` |
-| BLOCKED | blocked ゾーンに入った | zone, drone | `D1: x は blocked` |
-| RESTRICTED_SKIPPED | 接続の上を経由せずに restricted へ入った | zone, drone | `D1: r へ 1 ターンで入った` |
-| NOT_LANDED | 前のターンに接続の上で、このターン `dst` にいない | drone | `D1: r に着陸していない` |
-| NOT_RESTRICTED | 接続の上の `dst` が restricted でない | link, drone | `D1: a-b の先は restricted ではない` |
-| UNKNOWN_NAME | ゾーンにも接続にもない名前 | drone | `D1: zz は存在しない` |
-| UNKNOWN_DRONE | 番号が 1〜nb_drones の外 | なし | `D9 は存在しない` |
-| DUPLICATE_DRONE | 同じ行に同じドローンが 2 回 | drone | `D1 が 2 回書かれている` |
-| MOVED_AFTER_END | end に着いた後に動いた | drone | `D1: end の後に動いた` |
-| NOT_DELIVERED | 最終ターンで end にいない（最終ターンの状態に付ける） | drone | `D2: end に着いていない` |
+| ZONE_FULL | ゾーンの使用数 > 上限 | zone | `junction: 3/2 (over max_drones)` |
+| LINK_FULL | リンクの使用数 > 上限 | link | `s-a: 2/1 (over max_link_capacity)` |
+| NO_CONNECTION | 接続のないゾーンへ移動、または接続の上だが現在のゾーンにつながっていない | drone | `D3: no connection path_a-goal` |
+| BLOCKED | blocked ゾーンに入った | zone, drone | `D1: entered blocked zone x` |
+| RESTRICTED_SKIPPED | 接続の上を経由せずに restricted へ入った | zone, drone | `D1: entered restricted zone r in one turn` |
+| NOT_LANDED | 前のターンに接続の上で、このターン `dst` にいない | drone | `D1: did not land in r` |
+| NOT_RESTRICTED | 接続の上の `dst` が restricted でない | link, drone | `D1: a-b does not lead to a restricted zone` |
+| UNKNOWN_NAME | ゾーンにも接続にもない名前 | drone | `D1: unknown zone or connection zz` |
+| UNKNOWN_DRONE | 番号が 1〜nb_drones の外 | なし | `D9: unknown drone` |
+| DUPLICATE_DRONE | 同じ行に同じドローンが 2 回 | drone | `D1: appears twice` |
+| MOVED_AFTER_END | end に着いた後に動いた | drone | `D1: moved after reaching end` |
+| NOT_DELIVERED | 最終ターンで end にいない（最終ターンの状態に付ける） | drone | `D2: did not reach end` |
 
 UNKNOWN_NAME / UNKNOWN_DRONE / DUPLICATE_DRONE の 2 回目は位置を変えない。NOT_LANDED で行に現れなければ `InFlight` のまま。
 
@@ -270,6 +270,7 @@ done
 - `L4`: `position_point(InFlight(sr, "r"))` は `s` と `r` の中点
 - `L5`: `slot_offsets(1, 10) == [(0.0, 0.0)]`、`slot_offsets(4, 10)` は 4 点すべて原点から距離 10 で互いに異なる
 - `L6`: `zone_rgb("RED") == zone_rgb("red") == (255, 60, 60)`、`zone_rgb(None) == zone_rgb("rainbow") == UNKNOWN_ZONE`
+- `L7`: 幅・高さが `2 * margin` 以下の領域でも `zone_point` が例外を出さない（領域の中央に寄せる）
 
 - [ ] **Step 2: FAIL を確認** → **Step 3: 実装** → **Step 4: `uv run pytest tests/test_layout.py -v` PASS、`make lint`**
 
@@ -280,12 +281,12 @@ done
 ### Task 7: マップの描画
 
 **Files:**
-- Create: `fonts.py`, `view.py`, `scripts/snapshot.py`
+- Create: `view.py`, `scripts/snapshot.py`
 
 **Interfaces:**
 - Consumes: Task 3 の `TurnState`、Task 5 の `Player` の `from_turn` / `shown_turn` / `alpha`、Task 6 のすべて
 - Produces:
-  - `fonts.py`: `load_font(size: int) -> pygame.font.Font`。`pygame.font.match_font` で `["hiraginosans", "hiraginokakugothicpron", "notosanscjkjp", "notosansjp", "ipagothic", "takaogothic"]` を順に探す。見つからなければ既定のフォントを使い、標準エラーに一度だけ `warning: no Japanese font found; Japanese text may not render` を出す（Review Focus 5）
+  - フォントは pygame の既定フォント（`pygame.font.Font(None, size)`）を使う
   - `view.py`: `draw_map(surface: pygame.Surface, layout: MapLayout, fly_map: FlyMap, before: TurnState, after: TurnState, alpha: float, font: pygame.font.Font) -> None`
   - `scripts/snapshot.py`: `uv run python scripts/snapshot.py <map> <output> <turn> <png>` で、指定ターンの静止画を PNG に保存する（`SDL_VIDEODRIVER=dummy` で動く。手での確認用）
 
@@ -294,7 +295,7 @@ done
 - ゾーン: `zone_rgb` の円。違反の `zone` に含まれるものは `ERROR` の太い縁取り。近くに名前と `使用数/上限`（`after.zone_counts`）。上限超過は数字も `ERROR`。
 - ドローン: `lerp(layout.position_point(before 位置), layout.position_point(after 位置), alpha)` に、同じ地点のドローン数に応じた `slot_offsets` を足した場所へ、番号入りの白い丸。違反の `drone` に含まれるものは赤い縁取り。`alpha == 0` のときは `before == after` として扱う。
 
-- [ ] **Step 1: `fonts.py`・`view.py`・`scripts/snapshot.py` を実装する**
+- [ ] **Step 1: `view.py`・`scripts/snapshot.py` を実装する**
 
 - [ ] **Step 2: スナップショットで確認する**
 
@@ -328,8 +329,8 @@ Expected: PNG を Read ツールで開き、ブレインストーミングのモ
 1. シークバー: 左に `shown_turn / last_turn`、`violation_turns` の位置に `ERROR` の目印。クリック・ドラッグで、位置に最も近いターンへ `seek`。
 2. ボタン: ⏮（`seek(0)`）、◀（`step(-1)`）、▶/⏸（`toggle`）、▶（`step(1)`）、⏭（`seek(last_turn)`）、`0.5x` `1x` `2x` `4x`（選択中を強調）。記号が出ないフォントでもよいよう、ボタンの記号は pygame の図形で描く。
 3. 現在のターンの出力 1 行: `turn <n> $ ` に続けて `colored_segments(record.raw)` を色どおりに描く。ターン 0 は空。
-4. 違反の理由: `state.violations` の `message` を ` / ` でつなぐ（`ERROR` 色）。`total_violations == 0` なら `違反なし ✓`（緑）を表示する。
-5. キー操作の説明: `SPACE 再生/停止 · ←/→ 1ターン戻る/進む · Home/End 最初/最後 · 1-4 速度 · バーをクリックでジャンプ · Q/Esc 終了`
+4. 違反の理由: `state.violations` の `message` を ` / ` でつなぐ（`ERROR` 色）。`total_violations == 0` なら `No violations`（緑）を表示する。
+5. キー操作の説明: `SPACE play/pause | LEFT/RIGHT step | HOME/END first/last | 1-4 speed | click bar to seek | Q/ESC quit`
 
 `app.run`: ウィンドウ 1280×800、リサイズ可（`pygame.RESIZABLE`）。マップ領域は上から `高さ - PANEL_HEIGHT`。60 FPS で `player.update(dt)`。キーは上記の説明どおり（1〜4 が `SPEEDS` の順）。描画には `states[player.from_turn]`、`states[player.shown_turn]`、`player.alpha`、パネルには `records[player.shown_turn - 1]`（ターン 0 は `None`）と `states[player.shown_turn]` を渡す。
 
@@ -347,7 +348,7 @@ Expected: PNG を Read ツールで開き、ブレインストーミングのモ
 - 再生でドローンがなめらかに動き、最終ターンで止まる。もう一度押すと最初から。
 - ⏮ ◀ ▶ ⏭ と速度のボタン、キー操作がすべて効く。
 - シークバーをクリック・ドラッグして飛べる。
-- 出力 1 行が色付きで出て、`違反なし ✓` が表示される。
+- 出力 1 行が色付きで出て、`No violations` が表示される。
 - ウィンドウをリサイズしても崩れない。
 - `tests/fixtures/outputs/easy/02_simple_fork.txt` をコピーして 2 行目の `D3-junction` を消したファイルを開くと、該当ターンで赤表示・理由・シークバーの目印が出る。
 
